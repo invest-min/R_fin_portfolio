@@ -37,7 +37,6 @@ getSymbols("GOOG",
 
 two <- na.omit(merge(Ad(AAPL), Ad(GOOG))) #xts 형식 유지하여 합치고, NA 처리
 head(two)
-tail(two)
 colnames(two) = c("AAPL", "GOOG")
 head(two)
 barChart(two$AAPL) #가격밖에 없어서 선그래프만
@@ -52,7 +51,6 @@ two <- as.xts(two)
 barChart(two$AAPL)
 barChart(two$GOOG)
 
-
 # yahoo에서 원하는 이름으로 다운로드
 
 goog <- getSymbols("GOOG", # 객체명 정해주고,
@@ -60,36 +58,34 @@ goog <- getSymbols("GOOG", # 객체명 정해주고,
                    from = "2016/9/30",
                    to = "2022/10/1",
                    periodicity = "daily")
+head(goog)
 
 goog <- Ad(getSymbols("GOOG", # Adjusted Closing Price만 다운로드
                       auto.assign = F,
                       from = "2016/9/30",
                       to = "2022/10/1",
                       periodicity = "daily"))
-
 head(goog)
-tail(goog)
 
 rm(GSPC, AAPL, GOOG, goog, two)
+
 
 ## Import
 
 library(readxl)
 idx_daily <- read_excel("data/S&P DJ Indices_tr.xlsx", sheet = "idx_daily")
 head(idx_daily) #날짜가 변수로 포함
-tail(idx_daily)
 
 library(tidyverse)
 idx_daily <- idx_daily %>% column_to_rownames("date") #날짜를 행이름으로
+idx_daily <- as.xts(idx_daily)
 head(idx_daily)
 
-idx_daily <- as.xts(idx_daily) #형식을 xts로로
 barChart(idx_daily$stock)
+barChart(idx_daily$bond)
+barChart(idx_daily$bond_tr)
+barChart(idx_daily$bond_co)
+barChart(idx_daily$reit)
 
-
-idx_weekly <- read_excel("data/S&P DJ Indices_tr.xlsx", sheet = "idx_weekly")
-idx_weekly <- idx_weekly %>% column_to_rownames("date")
-idx_weekly <- as.xts(idx_weekly)
-head(idx_weekly)
-tail(idx_weekly)
-barChart(idx_weekly$stock)
+idx_3 <- idx_daily[,c(1, 6, 12, 5, 10, 14)]
+head(idx_3)
