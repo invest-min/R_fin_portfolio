@@ -72,6 +72,8 @@ rm(GSPC, AAPL, GOOG, goog, two)
 
 ## Import
 
+# 불러와서 xts로
+
 library(readxl)
 idx_daily <- read_excel("data/S&P DJ Indices_tr.xlsx", sheet = "idx_daily")
 head(idx_daily) #날짜가 변수로 포함
@@ -87,5 +89,19 @@ barChart(idx_daily$bond_tr)
 barChart(idx_daily$bond_co)
 barChart(idx_daily$reit)
 
+# xts 가공
+
 idx_3 <- idx_daily[,c(1, 6, 12, 5, 10, 14)]
 head(idx_3)
+tail(idx_3)
+
+coredata(idx_3) #xts 형식에서 시간 index 없앤 행렬
+index(idx_3) #xts 형식에서 시간 index만 추출한 벡터
+
+idx_31 <- idx_3[index(idx_3) <= "2019-09-30",] #전반 3년
+head(idx_31)
+tail(idx_31)
+
+idx_32 <- idx_3[index(idx_3) >= "2019-09-30",] #후반 3년. 수익률 위해 9/30 포함
+head(idx_32)
+tail(idx_32)
