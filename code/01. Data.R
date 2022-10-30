@@ -1,22 +1,22 @@
 ## Download
 
-library(quantmod)
-
 # yahoo에서 지수 및 종목 다운로드
+
+library(quantmod)
 
 getSymbols("^GSPC", #S&P 500. 지수 티커에는 "^"
            src="yahoo", #디폴트. 생략 가능
            from = "2016/9/30",
            to = "2022/10/1",
-           periodicity = "daily") #daily, weekly(월), monthly(1일)
+           periodicity = "daily") #daily, weekly(월), monthly(1일) 가능
 
 head(GSPC) #9/30부터. xts 형식 - 날짜가 rownames에 있음
-tail(GSPC) #9/30까지
+tail(GSPC) #9/30까지. 10/1 빠짐
 
 barChart(GSPC)
 barChart(GSPC, multi.col = T, theme = "white")
 
-candleChart(GSPC, multi.col = T, theme = "white")
+candleChart(GSPC, theme = "white")
 
 chartSeries(GSPC) #자동으로 적합한 그래프
 chartSeries(GSPC, multi.col = T, theme = "white")
@@ -84,24 +84,12 @@ idx_daily <- as.xts(idx_daily)
 head(idx_daily)
 
 barChart(idx_daily$stock)
-barChart(idx_daily$bond)
-barChart(idx_daily$bond_tr)
-barChart(idx_daily$bond_co)
-barChart(idx_daily$reit)
 
 # xts 가공
 
-idx_3 <- idx_daily[,c(1, 6, 12, 5, 10, 14)]
-head(idx_3)
-tail(idx_3)
+idx <- idx_daily[,c(1, 6, 12)]
+head(idx)
+tail(idx)
 
-coredata(idx_3) #xts 형식에서 시간 index 없앤 행렬
-index(idx_3) #xts 형식에서 시간 index만 추출한 벡터
-
-idx_31 <- idx_3[index(idx_3) <= "2019-09-30",] #전반 3년
-head(idx_31)
-tail(idx_31)
-
-idx_32 <- idx_3[index(idx_3) >= "2019-09-30",] #후반 3년. 수익률 위해 9/30 포함
-head(idx_32)
-tail(idx_32)
+coredata(idx) #xts 형식에서 시간 index 없앤 행렬
+index(idx) #xts 형식에서 시간 index만 추출한 벡터

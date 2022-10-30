@@ -3,130 +3,89 @@
 # 2. create an efficient frontier and then chart that object
 
 
-## 1. Run optimize.portfolio with trace=TRUE and then chart that object
+# 1. Run optimize.portfolio with trace=TRUE and then chart that object
 
-chart.EfficientFrontier(opt_3,
+chart.EfficientFrontier(opt_roi,
                         match.col = "StdDev",
                         n.portfolios = 100,
                         type = "p")
 
-chart.EfficientFrontier(opt_3,
+chart.EfficientFrontier(opt_roi,
                         match.col = "StdDev",
                         type = "l")
 
-chart.EF.Weights(opt_3, match.col = "StdDev")
+chart.EF.Weights(opt_roi, match.col = "StdDev")
 
-ef_3 <- extractEfficientFrontier(object = opt_3,
-                                 match.col = "StdDev",
-                                 n.portfolios = 15)
-ef_3
-summary(ef_3, digits=5)
-chart.EF.Weights(ef_3, match.col = "StdDev", colorset = bluemono)
+ef_roi <- extractEfficientFrontier(object = opt_roi,
+                                   match.col = "StdDev",
+                                   n.portfolios = 15)
+ef_roi
+summary(ef_roi, digits=5)
+chart.EF.Weights(ef_roi, match.col = "StdDev", colorset = bluemono)
 
 
-chart.EfficientFrontier(opt_31,
+chart.EfficientFrontier(opt_pso,
+                        match.col = "StdDev",
+                        n.portfolios = 100,
+                        type = "p")
+
+chart.EfficientFrontier(opt_pso,
                         match.col = "StdDev",
                         type = "l")
 
-chart.EF.Weights(opt_31, match.col = "StdDev")
+chart.EF.Weights(opt_pso, match.col = "StdDev")
 
-ef_31 <- extractEfficientFrontier(object = opt_31,
-                                  match.col = "StdDev",
-                                  n.portfolios = 15)
-chart.EF.Weights(ef_31, match.col = "StdDev", colorset = bluemono)
-
-
-chart.EfficientFrontier(opt_32,
-                        match.col = "StdDev",
-                        type = "l")
-
-chart.EF.Weights(opt_32, match.col = "StdDev")
-
-ef_32 <- extractEfficientFrontier(object = opt_32,
-                                  match.col = "StdDev",
-                                  n.portfolios = 15)
-chart.EF.Weights(ef_32, match.col = "StdDev", colorset = bluemono)
+ef_pso <- extractEfficientFrontier(object = opt_pso,
+                                   match.col = "StdDev",
+                                   n.portfolios = 15)
+ef_pso
+summary(ef_pso, digits=5)
+chart.EF.Weights(ef_pso, match.col = "StdDev", colorset = bluemono)
 
 
-chart.EfficientFrontier(opt_3_esg,
-                        match.col = "StdDev",
-                        type = "l")
+# 2. create an efficient frontier and then chart that object
 
-chart.EF.Weights(opt_3_esg, match.col = "StdDev")
+ef <- create.EfficientFrontier(rtn,
+                               portfolio = pf,
+                               type = "mean-StdDev")
+ef
+summary(ef, digits = 2)
+ef$frontier
 
-ef_3_esg <- extractEfficientFrontier(object = opt_3_esg,
-                                  match.col = "StdDev",
-                                  n.portfolios = 15)
-chart.EF.Weights(ef_3_esg, match.col = "StdDev", colorset = bluemono)
-
-
-chart.EfficientFrontier(opt_31_esg,
-                        match.col = "StdDev",
-                        type = "l")
-
-chart.EF.Weights(opt_31_esg, match.col = "StdDev")
-
-ef_31_esg <- extractEfficientFrontier(object = opt_31_esg,
-                                  match.col = "StdDev",
-                                  n.portfolios = 15)
-chart.EF.Weights(ef_31_esg, match.col = "StdDev", colorset = bluemono)
-
-
-chart.EfficientFrontier(opt_32_esg,
-                        match.col = "StdDev",
-                        type = "l")
-
-chart.EF.Weights(opt_32_esg, match.col = "StdDev")
-
-ef_32_esg <- extractEfficientFrontier(object = opt_32_esg,
-                                  match.col = "StdDev",
-                                  n.portfolios = 15)
-chart.EF.Weights(ef_32_esg, match.col = "StdDev", colorset = bluemono)
-
-
-## 2. create an efficient frontier and then chart that object
-
-ef_3 <- create.EfficientFrontier(rtn_3,
-                                 portfolio = pf_3,
-                                 type = "mean-StdDev")
-ef_3
-summary(ef_3, digits = 2)
-ef_3$frontier
-
-chart.EfficientFrontier(ef_3,
+chart.EfficientFrontier(ef,
                         match.col = "StdDev",
                         type = "l",
                         RAR.text = "Sharpe Ratio", # 디폴트는 Modified Sharpe Ratio
                         pch = 4)
 
-chart.EfficientFrontier(ef_3,
+chart.EfficientFrontier(ef,
                         match.col = "StdDev",
                         type = "l",
                         tangent.line = FALSE) # tangency line 제거
 
-chart.EfficientFrontier(ef_3,
+chart.EfficientFrontier(ef,
                         match.col = "StdDev",
                         type = "b",
                         rf = NULL) # tangency portfolio and line, SR, rf 제거
 
-chart.EfficientFrontier(ef_3,
+chart.EfficientFrontier(ef,
                         match.col = "StdDev",
                         type = "l", 
                         tangent.line = FALSE,
                         chart.assets = FALSE) # assets 제거
 
-chart.EfficientFrontier(ef_3,
+chart.EfficientFrontier(ef,
                         match.col = "StdDev",
                         type = "l", 
                         tangent.line = FALSE,
                         labels.assets = FALSE, # assets 이름만 제거
                         pch.assets = 1) # 점 모양 변경
 
-chart.EF.Weights(ef_3,
+chart.EF.Weights(ef,
                  colorset = bluemono,
                  match.col = "StdDev")
 
-chart.EF.Weights(ef_3,
+chart.EF.Weights(ef,
                  colorset = bluemono,
                  match.col = "StdDev",
                  main = "",
@@ -135,12 +94,12 @@ chart.EF.Weights(ef_3,
 
 ## Overlay efficient frontiers of multiple portfolios
 
-# 그림 겹치기
+# 여러 포트폴리오 겹치기
 
-pf_list <- combine.portfolios(list(pf_3, pf_3_esg))
-legend.labels <- c("normal", "esg")
+pf_list <- combine.portfolios(list(pf_1, pf_2))
+legend.labels <- c("portfolio 1", "portfolio 2")
 
-chart.EfficientFrontierOverlay(rtn_3,
+chart.EfficientFrontierOverlay(rtn,
                                portfolio_list = pf_list,
                                type = "mean-StdDev",
                                match.col = "StdDev",
