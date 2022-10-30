@@ -1,46 +1,46 @@
 ## Return
 
-# í•œ ìì‚°ì”©
-
 library(quantmod)
 
+# ÇÑ ÀÚ»ê¾¿
+
 rtn <- periodReturn(idx,
-       period = "daily", #weekly, monthly, quarterly, yearly
-       type = "arithmetic") #arithmetic(discrete) or log(continuous)
-head(rtn) #í•œ ì—´ë¡œ í•©ì³ì§. periodReturnì€ í•œ ìì‚°ì”© ê³„ì‚°í•´ì•¼ í•¨
+                    period = "daily", #weekly, monthly, quarterly, yearly
+                    type = "arithmetic") #arithmetic(discrete) or log(continuous)
+head(rtn) #ÇÑ ¿­·Î ÇÕÃÄÁü. periodReturnÀº ÇÑ ÀÚ»ê¾¿ °è»êÇØ¾ß ÇÔ
 
 rtn_stock <- periodReturn(idx$stock,
                           period = "daily",
-                          type = "arithmetic")[-1] #ì²«ë‚  ì œê±°
+                          type = "arithmetic")[-1] #Ã¹³¯ Á¦°Å
 colnames(rtn_stock) = "stock"
 head(rtn_stock)
-barChart(rtn_stock, up.col = "black", dn.col = "black", theme = "white")
+barChart(rtn_stock)
 
-rtn_stock <- dailyReturn(idx$stock, #í•¨ìˆ˜ëª…ì— daily ë“± ê°€ëŠ¥
+rtn_stock <- dailyReturn(idx_3$stock, #ÇÔ¼ö¸í¿¡ daily µî °¡´É
                          type = "arithmetic")[-1]
 colnames(rtn_stock) = "stock"
 head(rtn_stock)
-barChart(rtn_stock, up.col = "black", dn.col = "black", theme = "white")
-
-# ì—¬ëŸ¬ ìì‚° í•œ ë²ˆì—
-
-rtn <- ROC(idx, #ì—¬ëŸ¬ ìì‚° í•œ ë²ˆì— ê³„ì‚° ê°€ëŠ¥
-           type = "discrete")[-1,] #type: continuous / discrete
-head(rtn)
-barChart(rtn_stock, up.col = "black", dn.col = "black", theme = "white")
-
-library(PerformanceAnalytics)
-
-rtn <- Return.calculate(idx, #ì—¬ëŸ¬ ë³€ìˆ˜ í•œ ë²ˆì— ê³„ì‚° ê°€ëŠ¥
-                        method = "discrete")[-1] #discrete/log/difference
-head(rtn)
-(rtn_summary <- summary(rtn))
-rtn_annual <- Return.annualized(rtn, scale = 252) #ì›”ì€ scale = 12
-barplot(rtn_annual)
+barChart(rtn_stock)
 
 rm(rtn_stock)
 
-# ìˆ˜ìµë¥  ë¹„êµ ë° ìƒê´€ê´€ê³„
+# ¿©·¯ ÀÚ»ê ÇÑ ¹ø¿¡
+
+rtn <- ROC(idx, #¿©·¯ ÀÚ»ê ÇÑ ¹ø¿¡ °è»ê °¡´É
+           type = "discrete")[-1,] #type: continuous / discrete
+head(rtn)
+barChart(rtn$stock)
+
+library(PerformanceAnalytics)
+
+rtn <- Return.calculate(idx, #¿©·¯ º¯¼ö ÇÑ ¹ø¿¡ °è»ê °¡´É
+                        method = "discrete")[-1] #discrete/log/difference
+head(rtn)
+(rtn_summary <- summary(rtn))
+rtn_annual <- Return.annualized(rtn, scale = 252) #¿ùÀº scale = 12
+barplot(rtn_annual)
+
+# ¼öÀÍ·ü ºñ±³ ¹× »ó°ü°ü°è
 
 boxplot(rtn)
 boxplot(rtn, ylim = c(-0.01, 0.01))
@@ -64,7 +64,7 @@ scatter.smooth(rtn$reit, rtn$bond)
 
 ## Risk
 
-# ì´ìœ„í—˜
+# ÃÑÀ§Çè
 
 var(rtn)
 cov(rtn)
@@ -79,7 +79,7 @@ barplot(rsk_std)
 StdDev.annualized(rtn)
 barplot(StdDev.annualized(rtn))
 
-# í•˜ë°©ìœ„í—˜
+# ÇÏ¹æÀ§Çè
 
 (rsk_smv <- SemiVariance(rtn))
 barplot(rsk_smv)
@@ -107,8 +107,7 @@ barplot(-rsk_esg)
 (rsk_esm <- CVaR(rtn, p = .95, method = "modified"))
 barplot(-rsk_esm)
 
-
-# ìœ„í—˜ ë¹„êµ
+# À§Çè ºñ±³
 
 rsk <- rbind(rsk_std, rsk_smv,
              rsk_varh, rsk_varg, rsk_varm,
